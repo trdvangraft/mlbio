@@ -1,8 +1,8 @@
 import numpy as np
 
-from src.deletion import DeletionModel
-from src.insertion import InsertionModel
-from src.indel import InDelModel
+from src.modelTraining.deletion import DeletionModel
+from src.modelTraining.insertion import InsertionModel
+from src.modelTraining.indel import InDelModel
 
 
 def save_errors(errors, name):
