@@ -1,10 +1,11 @@
 
 import os
+import hyperopt
 
 import numpy as np
 
 from src.modelTraining.base_model import BaseModel
-from src.modelTraining.model_factory import model_creator, mse
+from src.modelTraining.model_factory import fit_and_log_cv, model_creator, mse
 
 from keras.callbacks import EarlyStopping
 from keras.regularizers import l2, l1
@@ -74,3 +75,5 @@ class InDelModel(BaseModel):
         models_l2[np.argmin(errors_l2)].save("./models/indel_l2.h5")
 
         return errors_l1, errors_l2
+
+    
