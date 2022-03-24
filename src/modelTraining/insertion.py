@@ -1,8 +1,8 @@
 # import pylab as pl
 import numpy as np
-from src.base_model import BaseModel
+from src.modelTraining.base_model import BaseModel
 
-from src.model_factory import model_creator, mse
+from src.modelTraining.model_factory import model_creator, mse
 
 from keras.callbacks import EarlyStopping
 from keras.regularizers import l2, l1
@@ -10,8 +10,8 @@ import pandas as pd
 
 
 class InsertionModel(BaseModel):
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, trainingset):
+        super().__init__(trainingset=trainingset)
 
     def prepare_data(self):
         x_t, y_t = self.get_xy_split()

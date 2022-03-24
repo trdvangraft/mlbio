@@ -1,4 +1,3 @@
-
 import os
 
 import numpy as np
@@ -11,8 +10,8 @@ from keras.regularizers import l2, l1
 
 
 class InDelModel(BaseModel):
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self,trainingset):
+        super().__init__(trainingset=trainingset)
 
     def prepare_data(self):
         x_t, y_t = self.get_xy_split()
