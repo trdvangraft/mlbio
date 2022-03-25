@@ -66,7 +66,7 @@ class InsertionModel(BaseModel):
             y_hat = model_l2.predict(x_test)
             errors_l2.append(mse(y_hat, y_test))
 
-        models_l1[np.argmin(errors_l1)].save("./models/insertion_l1.h5")
-        models_l2[np.argmin(errors_l2)].save("./models/insertion_l2.h5")
+        models_l1[np.argmin(errors_l1)].save("C:/Users/niekb/Workspace/MachineLearningforBioinformatics/mlbio/models/insertion_l1.h5")
+        models_l2[np.argmin(errors_l2)].save("C:/Users/niekb/Workspace/MachineLearningforBioinformatics/mlbio/models/insertion_l2.h5")
 
         return errors_l1, errors_l2

@@ -29,14 +29,13 @@ def generateOutcomes(filename):
     for i in range(0, 440):
         mode = "l2"
         if mode == "l2":
-            indel, deletion, insertion = load_model("../models/indel_l2.h5"), load_model("../models/deletion_l2.h5"), load_model("../models/insertion_l2.h5")
+            indel, deletion, insertion = load_model("C:/Users/niekb/Workspace/MachineLearningforBioinformatics/mlbio/models/indel_l2.h5"), load_model("C:/Users/niekb/Workspace/MachineLearningforBioinformatics/mlbio/models/deletion_l2.h5"), load_model("C:/Users/niekb/Workspace/MachineLearningforBioinformatics/mlbio/models/insertion_l2.h5")
         else:
-            indel, deletion, insertion = load_model("../models/indel_l1.h5"), load_model("../models/deletion_l1.h5"), load_model("../models/insertion_l1.h5")
+            indel, deletion, insertion = load_model("C:/Users/niekb/Workspace/MachineLearningforBioinformatics/mlbio/models/indel_l1.h5"), load_model("C:/Users/niekb/Workspace/MachineLearningforBioinformatics/mlbio/models/models/deletion_l1.h5"), load_model("C:/Users/niekb/Workspace/MachineLearningforBioinformatics/mlbio/models/models/insertion_l1.h5")
 
         # Generate the predicted value and frameshift
         y_hat, fs = gen_prediction(hencode.iloc[i, :].to_numpy(), ins.iloc[i, :].to_numpy(), feat.iloc[i, :].to_numpy(),
                                    prerequesites, indel, deletion, insertion)
-        print("---- TESTING: Prediction done ----")
 
         # Get the observed value
         y_obs = obsp.iloc[i, :].to_numpy()
@@ -69,14 +68,14 @@ def generateOutcomes(filename):
         # boxarray[14].append(y_obs[539] - y_hat[539])
         # boxarray[15].append(y_obs[556] - y_hat[556])
 
-
+    print("---- TESTING: Prediction done ----")
 
     # Write every array to txt file
-    file = open(str(filename) + "testMSE.txt", 'w')
+    file = open(str(filename) + "_testMSE.txt", 'w')
     file.write(str(msearray))
     file.close()
 
-    file2 = open(str(filename) + "testFS.txt", 'w')
+    file2 = open(str(filename) + "_testFS.txt", 'w')
     file2.write(str(fsarray))
     file2.close()
 

@@ -8,7 +8,7 @@ from src.modelTraining.indel import InDelModel
 def save_errors(errors, name):
     reg_names = ["l1", "l2"]
     for reg_name, error in zip(reg_names, errors):
-        np.save(f"./results/{name}_{reg_name}.npy", error)
+        np.save(f"C:/Users/niekb/Workspace/MachineLearningforBioinformatics/mlbio/results/{name}_{reg_name}.npy", error)
 
 
 def main(trainingset):
@@ -18,13 +18,13 @@ def main(trainingset):
 
     print("---- TRAINING: Indel model ----")
     indel_errors = indel_model.train_model()
-    # save_errors(indel_errors, "indel")
+    save_errors(indel_errors, "indel")
     print("---- TRAINING: Insertion model ----")
     ins_errors = ins_model.train_model()
-    # save_errors(ins_errors, "insertion")
+    save_errors(ins_errors, "insertion")
     print("---- TRAINING: Deletion model ----")
     del_errors = del_model.train_model()
-    # save_errors(del_errors, "deletion")
+    save_errors(del_errors, "deletion")
 
 
 # if __name__ == "__main__":
