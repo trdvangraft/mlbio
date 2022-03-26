@@ -1,8 +1,8 @@
 # import pylab as pl
 import numpy as np
-from src.base_model import BaseModel
 
-from src.model_factory import model_creator, mse
+from src.modelTraining.base_model import BaseModel
+from src.modelTraining.model_factory import model_creator, mse
 
 from keras.callbacks import EarlyStopping
 from keras.regularizers import l2, l1
@@ -31,8 +31,7 @@ class InsertionModel(BaseModel):
 
         return x_train, x_test, y_train, y_test
 
-    def train_model(self):
-        x_train, x_test, y_train, y_test = self.prepare_data()
+    def train_model(self, x_train, x_test, y_train, y_test):
 
         np.random.seed(0)
         lambdas = self.get_lambda()

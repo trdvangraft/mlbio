@@ -32,8 +32,8 @@ class InDelModel(BaseModel):
 
         return x_train, x_test, y_train, y_test
 
-    def train_model(self):
-        x_train, x_test, y_train, y_test = self.prepare_data()
+    def train_model(self, x_train, x_test, y_train, y_test):
+        # x_train, x_test, y_train, y_test = self.prepare_data()
 
         np.random.seed(0)
         lambdas = self.get_lambda()
@@ -49,7 +49,7 @@ class InDelModel(BaseModel):
                 kernel_regularizer=l1,
                 kernel_weight=kernel_weight,
                 loss="binary_crossentropy",
-                input_shape=(384, )
+                input_shape=(x_train.shape[1], )
             )
             model_l1.fit(x_train, y_train, epochs=100, validation_data=(x_test, y_test),
                          callbacks=[EarlyStopping(patience=1)], verbose=0)
@@ -62,7 +62,7 @@ class InDelModel(BaseModel):
                 kernel_regularizer=l2,
                 kernel_weight=kernel_weight,
                 loss="binary_crossentropy",
-                input_shape=(384, )
+                input_shape=(x_train.shape[1], ) # normally 384
             )
             model_l2.fit(x_train, y_train, epochs=100, validation_data=(x_test, y_test),
                          callbacks=[EarlyStopping(patience=1)], verbose=0)
