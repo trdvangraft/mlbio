@@ -29,7 +29,7 @@ def indel_optimization():
     indel_model = InDelModel()
     x_train, x_test, y_train, y_test = indel_model.prepare_data()
 
-    MAX_EVALS = 4
+    MAX_EVALS = 500
     METRIC = "val_RMSE"
     # Number of experiments to run at once
     PARALLELISM = 2
@@ -62,8 +62,8 @@ def indel_optimization():
 
 
 
-    # trials = hyperopt.SparkTrials(parallelism=PARALLELISM, spark_session=spark)
-    trials = hyperopt.SparkTrials()
+    trials = hyperopt.SparkTrials(parallelism=PARALLELISM, spark_session=spark)
+    # trials = hyperopt.SparkTrials()
     train_objective = train_model_v2(x_train, y_train, x_test, y_test, METRIC)
 
     with mlflow.start_run(experiment_id=1) as run:
@@ -75,7 +75,7 @@ def indel_optimization():
 
         try:
             hyperopt.fmin(fn=train_objective,
-                            space=litte_space,
+                            space=space,
                             algo=hyperopt.tpe.suggest,
                             max_evals=MAX_EVALS,
                             trials=trials)
