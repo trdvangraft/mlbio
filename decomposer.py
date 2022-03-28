@@ -1,3 +1,4 @@
+import numpy
 import numpy as np
 
 from src.modelTraining.base_model import BaseModel
@@ -18,7 +19,7 @@ def plotExplainedPCA(arr, low = 1, high=200):
         pca.fit(arr)
 
         # print('Explained {} divided over variation per principal component: {}'.format(sum(pca.explained_variance_ratio_), pca.explained_variance_ratio_))
-        # print("Explained variation {} by {} components".format(round(sum(pca.explained_variance_ratio_),3), i))
+        print("Explained variation {} by {} components".format(round(sum(pca.explained_variance_ratio_),3), i))
         y.append(sum(pca.explained_variance_ratio_))
 
     plt.plot(x, y)
@@ -28,7 +29,7 @@ def plotExplainedPCA(arr, low = 1, high=200):
     plt.show()
 
 
-def oneHotEncoder(seq):
+def oneHotEncoder(seq, trinucleotide = False):
     nt = ['A', 'T', 'C', 'G']
 
     encoded = []
@@ -58,6 +59,9 @@ def oneHotEncoder(seq):
 
     # print("Len after di-nuceotide is {}".format(len(encoded)))
 
+    if not trinucleotide:
+        return encoded
+
     # One Hot Encode tri-nucleotide
     for i in range(len(seq) - 2):
         s = seq[i:i + 3]
@@ -76,17 +80,15 @@ def oneHotEncoder(seq):
     return encoded
 
 
-def encodeAll(seqs):
+def encodeAll(seqs, trinucleotide = False):
     encodes = []
     for s in seqs:
-        encodes.append(oneHotEncoder(s))
+        encodes.append(oneHotEncoder(s,trinucleotide))
 
     return np.array(encodes)
 
 
-def genPCAComponents(numComponents=220):
-    indel = InDelModel()
-    x_train, x_test, y_train, y_test = indel.prepare_data()
+def genPCAComponents(x_train, x_test, numComponents=220):
 
     pca = PCA(n_components=numComponents)
     pca.fit(x_train)
@@ -94,7 +96,7 @@ def genPCAComponents(numComponents=220):
     x_train = pca.transform(x_train)
     x_test = pca.transform(x_test)
 
-    return x_train, x_test, y_train, y_test
+    return x_train, x_test
 
 
 def save_errors(errors, name):
@@ -109,43 +111,61 @@ def lastNofElement(seqs, lim = 6):
 
     return out
 
+def prepare_data(self):
+    x_t, y_t = self.get_xy_split()
+
+    x_t = x_t[:, -384:]
+
+    y_ins = np.sum(y_t[:, -21:], axis=1)
+    y_del = np.sum(y_t[:, :-21], axis=1)
+
+    y_t = np.array([[0, 1] if y_ins > y_del else [1, 0]
+                    for y_ins, y_del in zip(y_ins, y_del)]).astype('float32')
+
+    train_size = round(len(x_t) * 0.9)
+
+    x_train, x_test = x_t[:train_size, :], x_t[train_size:, :]
+    y_train, y_test = y_t[:train_size], y_t[train_size:]
+
+    return x_train, x_test, y_train, y_test
+
+
 if __name__ == "__main__":
-    # plotExplainedPCA()
-
-
-    # print(a)
-
-    # oneHotEncoder("AACTCG")
-
     model = BaseModel()
     s,x,y = model.get_sxy_split()
     print(s)
     s = lastNofElement(s)
     print(s)
-    encodedX = encodeAll(s)
+    encodedX = encodeAll(s, trinucleotide=True)
     print(encodedX)
     print(encodedX.shape)
 
-    # x = x[:,-104:]
-    # print(x.shape)
+    # SET WHICH ENCODING IS SET(default is from lindel trainingset
+    # x = encodedX;
 
     train_size = round(x.shape[0] * 0.9)
-    print(train_size)
-    x_train, encodedX_test = encodedX[:train_size, :], encodedX[train_size:, :]
-    # y_train, y_test = y[:train_size], y[train_size:]
+    x_train, x_test = encodedX[:train_size, :], encodedX[train_size:, :]
+    y_train, y_test = y[:train_size, :], y[train_size:, :]
 
-    plotExplainedPCA(x_train,1,360)
+    # Do PCA
+    x_train,x_test = genPCAComponents(x_train,x_test,104)
+    numpy.save("./data/insTriData104.txt",x_test)
 
+    # y_ins = np.sum(y[:, -21:], axis=1)
+    # y_del = np.sum(y[:, :-21], axis=1)
     #
-    # x_train, x_test, y_train, y_test = genPCAComponents(220)
-    # print(x_train.shape)
-    #
+    # y_indel = np.array([[0, 1] if y_ins > y_del else [1, 0]
+    #                     for y_ins, y_del in zip(y_ins, y_del)]).astype('float32')
+    # y_indel_train, y_indel_test = y_indel[:train_size, :], y_indel[train_size:, :]
+
+    y_ins = y[:, -21:]
+    y_train, y_test = y_ins[:train_size, :], y_ins[train_size:, :]
     # del_model = DeletionModel()
-    # ins_model = InsertionModel()
+    ins_model = InsertionModel()
     # indel_model = InDelModel()
-    #
+
     # print("---- TRAINING: Indel model ----")
-    # indel_errors = indel_model.train_model(x_train, x_test, y_train, y_test)
+    # indel_errors = indel_model.train_model(x_train, x_test, y_indel_train, y_indel_test)
     # save_errors(indel_errors, "indel")
     # print(indel_errors)
     # print("---- TRAINING: Insertion model ----")

@@ -44,7 +44,7 @@ class InsertionModel(BaseModel):
 
             model_l1 = model_creator(
                 num_units=21,
-                input_shape=(104, ),
+                input_shape=(x_train.shape[1], ),
                 kernel_regularizer=l1,
                 kernel_weight=kernel_weight)
             model_l1.fit(x_train, y_train, epochs=100, validation_data=(x_test, y_test),
@@ -55,7 +55,7 @@ class InsertionModel(BaseModel):
 
             model_l2 = model_creator(
                 num_units=21,
-                input_shape=(104, ),
+                input_shape=(x_train.shape[1], ),
                 kernel_regularizer=l2,
                 kernel_weight=kernel_weight
             )
