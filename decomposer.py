@@ -141,7 +141,7 @@ if __name__ == "__main__":
     print(encodedX.shape)
 
     # SET WHICH ENCODING IS SET(default is from lindel trainingset
-    # x = encodedX;
+    x = encodedX;
 
     train_size = round(x.shape[0] * 0.9)
     x_train, x_test = encodedX[:train_size, :], encodedX[train_size:, :]
@@ -168,9 +168,9 @@ if __name__ == "__main__":
     # indel_errors = indel_model.train_model(x_train, x_test, y_indel_train, y_indel_test)
     # save_errors(indel_errors, "indel")
     # print(indel_errors)
-    # print("---- TRAINING: Insertion model ----")
-    # ins_errors = ins_model.train_model(x_train, x_test, y_train, y_test)
-    # save_errors(ins_errors, "insertion")
+    print("---- TRAINING: Insertion model ----")
+    ins_errors = ins_model.train_model(x_train, x_test, y_train, y_test)
+    save_errors(ins_errors, "insertion")
     # print("---- TRAINING: Deletion model ----")
     # del_errors = del_model.train_model()
     # save_errors(del_errors, "deletion")

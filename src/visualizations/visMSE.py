@@ -25,7 +25,7 @@ boxarray = [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []]
 # Get frame shift array from prerequesites
 frame_shift = prerequesites[3]
 
-for i in range(0, 440):
+for i in range(0, 435):
     mode = "l2"
     if mode == "l2":
         indel, deletion, insertion = load_model("C:\\Users\\corne\\PycharmProjects\\mlbio\\models\\indel_l2.h5"), load_model("C:\\Users\\corne\\PycharmProjects\\mlbio\\models\\deletion_l2.h5"), load_model("C:\\Users\\corne\\PycharmProjects\\mlbio\\models\\insertion_l2.h5")
@@ -33,7 +33,7 @@ for i in range(0, 440):
         indel, deletion, insertion = load_model("../models/indel_l1.h5"), load_model("../models/deletion_l1.h5"), load_model("../models/insertion_l1.h5")
 
     # Generate the predicted value and frameshift
-    y_hat, fs = gen_prediction(hencode.iloc[i, :].to_numpy(), ins, feat.iloc[i, :].to_numpy(),
+    y_hat, fs = gen_prediction(hencode.iloc[i, :].to_numpy(), ins[i,:], feat.iloc[i, :].to_numpy(),
                                prerequesites, indel, deletion, insertion)
     # Get the observed value
     y_obs = obsp.iloc[i, :].to_numpy()

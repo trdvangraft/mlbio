@@ -138,6 +138,9 @@ def gen_prediction(hotencoding, ins, bfeatures, prereq, indel, deletion, inserti
     ds  = deletion.predict(input_del)
     ins = insertion.predict(input_ins)
 
+    # print("ins shape == {}".format(ins.shape))
+    # print("ds shape == {}".format(ds.shape))
+
     y_hat = np.concatenate((ds*dratio,ins*insratio),axis=None)
     return (y_hat, np.dot(y_hat, frame_shift))
 
