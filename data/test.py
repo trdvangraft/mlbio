@@ -2,14 +2,12 @@ import pandas as pd
 import math
 import numpy as np
 import random
+from numba import jit
+from itertools import groupby
+import collections
 
-data = pd.read_csv("Lindel_training.txt", sep='\t', header=None)
-datanoised = pd.read_csv("Lindel_training_withnoise_50_100.txt", sep='\t', header=None)
-
-print(data.iloc[0, 3034:])
-print(datanoised.iloc[0, 3034:])
-print(datanoised.iloc[0,3034:].sum())
-print("stop")
-
-
-
+ordata = pd.read_csv("./Lindel_training.txt", sep='\t', header=None)
+data = pd.read_csv("./Lindel_training_bootstrapping_40_0.txt", sep='\t', header=None)
+print(ordata.iloc[:5,3034:])
+print(data.iloc[:5,3034:])
+print("this")
