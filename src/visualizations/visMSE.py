@@ -1,16 +1,16 @@
 import os, sys
-from predictor import gen_prediction, write_file
+from src.predictor import gen_prediction, write_file
 import pickle as pkl
 import pandas as pd
-from modelTraining.model_factory import mse
+from src.modelTraining.model_factory import mse
 import numpy as np
 
 
 from keras.models import load_model
 
 
-prerequesites = pkl.load(open("../data/model_prereq.pkl", 'rb'))
-Lindel_training = pd.read_csv("../data/Lindel_test.txt", sep='\t', header=None)
+prerequesites = pkl.load(open("C:\\Users\\corne\\PycharmProjects\\mlbio\\data\\model_prereq.pkl", 'rb'))
+Lindel_training = pd.read_csv("C:\\Users\\corne\\PycharmProjects\\mlbio\\data\\Lindel_test.txt", sep='\t', header=None)
 # column descriptions
 gseq = Lindel_training.iloc[:, 0]  # guide sequences
 feat = Lindel_training.iloc[:, 1:3034]  # 3033 binary features [2649 MH binary features + 384 one hot encoded features]
@@ -28,7 +28,7 @@ frame_shift = prerequesites[3]
 for i in range(0, 440):
     mode = "l2"
     if mode == "l2":
-        indel, deletion, insertion = load_model("../models/indel_l2.h5"), load_model("../models/deletion_l2.h5"), load_model("../models/insertion_l2.h5")
+        indel, deletion, insertion = load_model("C:\\Users\\corne\\PycharmProjects\\mlbio\\models\\indel_l2.h5"), load_model("C:\\Users\\corne\\PycharmProjects\\mlbio\\models\\deletion_l2.h5"), load_model("C:\\Users\\corne\\PycharmProjects\\mlbio\\models\\insertion_l2.h5")
     else:
         indel, deletion, insertion = load_model("../models/indel_l1.h5"), load_model("../models/deletion_l1.h5"), load_model("../models/insertion_l1.h5")
 
