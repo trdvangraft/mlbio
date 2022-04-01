@@ -133,12 +133,12 @@ def prepare_data(self):
 if __name__ == "__main__":
     model = BaseModel()
     s,x,y = model.get_sxy_split()
-    print(s)
+    # print(s)
     s = lastNofElement(s)
-    print(s)
+    # print(s)
     encodedX = encodeAll(s, trinucleotide=True)
-    print(encodedX)
-    print(encodedX.shape)
+    # print(encodedX)
+    # print(encodedX.shape)
 
     # SET WHICH ENCODING IS SET(default is from lindel trainingset
     x = encodedX;
@@ -148,8 +148,10 @@ if __name__ == "__main__":
     y_train, y_test = y[:train_size, :], y[train_size:, :]
 
     # Do PCA
-    x_train,x_test = genPCAComponents(x_train,x_test,104)
-    numpy.save("./data/insTriData104.txt",x_test)
+    x_train,x_test = genPCAComponents(x_train,x_test,10)
+    numpy.save("./data/insTriData104Test",x_test)
+    print(x_test)
+    print(x_test.shape)
 
     # y_ins = np.sum(y[:, -21:], axis=1)
     # y_del = np.sum(y[:, :-21], axis=1)
@@ -168,9 +170,9 @@ if __name__ == "__main__":
     # indel_errors = indel_model.train_model(x_train, x_test, y_indel_train, y_indel_test)
     # save_errors(indel_errors, "indel")
     # print(indel_errors)
-    print("---- TRAINING: Insertion model ----")
-    ins_errors = ins_model.train_model(x_train, x_test, y_train, y_test)
-    save_errors(ins_errors, "insertion")
+    # print("---- TRAINING: Insertion model ----")
+    # ins_errors = ins_model.train_model(x_train, x_test, y_train, y_test)
+    # save_errors(ins_errors, "insertion")
     # print("---- TRAINING: Deletion model ----")
     # del_errors = del_model.train_model()
     # save_errors(del_errors, "deletion")

@@ -129,7 +129,7 @@ def gen_prediction(hotencoding, ins, bfeatures, prereq, indel, deletion, inserti
 
 
     input_indel = hotencoding.reshape((-1, 384))
-    input_ins   = ins.reshape((-1, 104))
+    input_ins   = ins.reshape((-1, 10))
     input_del   = bfeatures.reshape((-1, 3033))
     # Create prediction
     indelout = indel.predict(input_indel)[0]

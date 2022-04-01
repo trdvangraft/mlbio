@@ -15,7 +15,7 @@ Lindel_training = pd.read_csv("C:\\Users\\corne\\PycharmProjects\\mlbio\\data\\L
 gseq = Lindel_training.iloc[:, 0]  # guide sequences
 feat = Lindel_training.iloc[:, 1:3034]  # 3033 binary features [2649 MH binary features + 384 one hot encoded features]
 hencode = feat.iloc[:, -384:] # One hot encoded features
-ins = np.load("C:\\Users\\corne\\PycharmProjects\\mlbio\\data\\insTriData104.txt.npy") # Insertion features
+ins = np.load("C:\\Users\\corne\\PycharmProjects\\mlbio\\data\\insTriData104Test.npy") # Insertion features
 obsp = Lindel_training.iloc[:,3034:]  # 557 observed outcome frequencies
 
 msearray = []
