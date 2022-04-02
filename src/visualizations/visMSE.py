@@ -15,7 +15,7 @@ Lindel_training = pd.read_csv("C:\\Users\\corne\\PycharmProjects\\mlbio\\data\\L
 gseq = Lindel_training.iloc[:, 0]  # guide sequences
 feat = Lindel_training.iloc[:, 1:3034]  # 3033 binary features [2649 MH binary features + 384 one hot encoded features]
 hencode = feat.iloc[:, -384:] # One hot encoded features
-ins = hencode.iloc[:, -104:] # Insertion features
+ins = np.load("C:\\Users\\corne\\PycharmProjects\\mlbio\\data\\insTest.npy") # Insertion features
 obsp = Lindel_training.iloc[:,3034:]  # 557 observed outcome frequencies
 
 msearray = []
@@ -33,7 +33,7 @@ for i in range(0, 440):
         indel, deletion, insertion = load_model("../models/indel_l1.h5"), load_model("../models/deletion_l1.h5"), load_model("../models/insertion_l1.h5")
 
     # Generate the predicted value and frameshift
-    y_hat, fs = gen_prediction(hencode.iloc[i, :].to_numpy(), ins.iloc[i, :].to_numpy(), feat.iloc[i, :].to_numpy(),
+    y_hat, fs = gen_prediction(hencode.iloc[i, :].to_numpy(), ins[i, :], feat.iloc[i, :].to_numpy(),
                                prerequesites, indel, deletion, insertion)
     # Get the observed value
     y_obs = obsp.iloc[i, :].to_numpy()
@@ -67,7 +67,8 @@ for i in range(0, 440):
     boxarray[15].append(y_obs[556] - y_hat[556])
 
 
-
+print(fsarray)
+print(boxarray)
 
 
 # Write every array to txt file
