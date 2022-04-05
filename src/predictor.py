@@ -119,12 +119,6 @@ def create_label_array(lb,ep_freq,seq):
 def gen_prediction(hotencoding, ins, bfeatures, prereq, indel, deletion, insertion):
     '''generate the prediction for all classes, redundant classes will be combined'''
 
-    # if mode == "l2":
-    #     indel, deletion, insertion = load_model("../models/indel_l2.h5"), load_model("../models/deletion_l2.h5"), load_model("../models/insertion_l2.h5")
-    # else:
-    #     indel, deletion, insertion = load_model("../models/indel_l1.h5"), load_model("../models/deletion_l1.h5"), load_model("../models/insertion_l1.h5")
-    
-    
     label, rev_index, features, frame_shift = prereq
 
 
