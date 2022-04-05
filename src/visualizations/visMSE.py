@@ -76,8 +76,8 @@ file.write(str(msearray))
 file.close()
 
 file2 = open("testFS.txt", 'w')
-fil2.write(str(fsarray))
-fil2.close()
+file2.write(str(fsarray))
+file2.close()
 
 file3 = open("testBox.txt", 'w')
 file3.write(str(boxarray))
