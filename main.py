@@ -41,26 +41,14 @@ def indel_optimization():
         .getOrCreate()
 
     space = {
-        'num_units': scope.int(hyperopt.hp.quniform('num_units', 2, 64, 2)),
-        'num_layers': scope.int(hyperopt.hp.quniform('num_iterations', 0, 10, 1)),
+        'num_units': scope.int(hyperopt.hp.quniform('num_units', 2, 128, 1)),
+        'num_layers': scope.int(hyperopt.hp.quniform('num_iterations', 1, 20, 1)),
         # The parameters below are cast to int using the scope.int() wrapper
         'kernel_regularizer': hyperopt.hp.choice('kernel_regularizer', ['l1', 'l2']),
-        'kernel_weight': 10**hyperopt.hp.quniform('kernel_weight', -10, -1, 1),
-        'activation': hyperopt.hp.choice('activation', ['relu', 'sigmoid']),
-        'learning_rate': hyperopt.hp.choice('learning_rate', [0.01, 0.001, 0.0001])
+        'kernel_weight': 10**hyperopt.hp.quniform('kernel_weight', -10, -1, .1),
+        'activation': hyperopt.hp.choice('activation', ['relu', 'sigmoid', 'tanh', 'softmax']),
+        'learning_rate': hyperopt.hp.choice('learning_rate', [0.1, 0.01, 0.001, 0.0001])
     }
-
-    litte_space = {
-        'num_units': scope.int(hyperopt.hp.quniform('num_units', 2, 4, 2)),
-        'num_layers': scope.int(hyperopt.hp.quniform('num_iterations', 0, 1, 1)),
-        # The parameters below are cast to int using the scope.int() wrapper
-        'kernel_regularizer': hyperopt.hp.choice('kernel_regularizer', ['l1']),
-        'kernel_weight': 10**hyperopt.hp.quniform('kernel_weight', -10, -9, 1),
-        'activation': hyperopt.hp.choice('activation', ['relu']),
-        'learning_rate': hyperopt.hp.choice('learning_rate', [0.01])
-    }
-
-
 
     trials = hyperopt.SparkTrials(parallelism=PARALLELISM, spark_session=spark)
     # trials = hyperopt.SparkTrials()
