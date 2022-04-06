@@ -6,7 +6,7 @@ from numba import jit
 
 
 def generateNoise(level, concentration):
-    data = pd.read_csv("./Lindel_training.txt", sep='\t', header=None)
+    data = pd.read_csv("../data/Lindel_training.txt", sep='\t', header=None)
     editData = data.copy()
 
     x_t = editData.iloc[:, 1:3034]  # the full one hot encoding
@@ -31,10 +31,10 @@ def generateNoise(level, concentration):
     print("---- random generator finished for level: " + str(level) + " ----")
 
 
-def generateBootstrappingNoise(percentage, repetitions):
-    averageReadsperClass = 1.16e6 / 6872
-    samples = math.ceil(percentage * averageReadsperClass)
-    data = pd.read_csv("./Lindel_training.txt", sep='\t', header=None)
+def generateBootstrappingNoise(samples, repetitions):
+    # averageReadsperClass = 1.16e6 / 6872
+    # samples = math.ceil(percentage * averageReadsperClass)
+    data = pd.read_csv("../data/Lindel_training.txt", sep='\t', header=None)
     editData = data.copy().to_numpy()
 
     y_t = editData[:, 3034:]
@@ -54,12 +54,12 @@ def generateBootstrappingNoise(percentage, repetitions):
 
         resultData = pd.DataFrame(editData)
 
-        filename = "./Lindel_training_bootstrapping_" + str(int(percentage*100)) + "_" + str(rep) + ".txt"
+        filename = "./Lindel_training_bootstrapping_" + str(int(samples)) + "samples_" + str(rep) + ".txt"
         resultData.to_csv(filename, sep='\t', index=False, header=None)
         print("---- random generator finished for: " + str(samples) + " samples, repetition: " + str(rep) + " ----")
 
 
 if __name__ == "__main__":
-    percentages = [0.2]
+    percentages = [10,20]
     for i in percentages:
         generateBootstrappingNoise(i, 5)
