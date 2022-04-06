@@ -1,17 +1,23 @@
+'''
+Methods to generate noise training datasets
+'''
+
 import pandas as pd
 import numpy as np
 import math
 import random
-from numba import jit
 
 
 def generateNoise(level, concentration):
+    '''
+    Method to impose uniform label noise on training set
+    args:
+        level: relative percentage in which noise has to be added, 50 means 50% noise, 50% original data
+        concentration: focus of the noise, keep 100 to concentrate on all labels
+    '''
+
     data = pd.read_csv("../data/Lindel_training.txt", sep='\t', header=None)
     editData = data.copy()
-
-    x_t = editData.iloc[:, 1:3034]  # the full one hot encoding
-    # 557 observed outcome frequencies
-    y_t = editData.iloc[:, 3034:]
 
     def normalization(labeli, noise):
         return labeli * (1 - level) + noise * level
@@ -32,8 +38,13 @@ def generateNoise(level, concentration):
 
 
 def generateBootstrappingNoise(samples, repetitions):
-    # averageReadsperClass = 1.16e6 / 6872
-    # samples = math.ceil(percentage * averageReadsperClass)
+    ''''
+    Method to generate boostrapped training sets
+    args:
+        samples: number of samples that should be boostrapped
+        repitions: number of datasets that should be created
+    '''
+
     data = pd.read_csv("../data/Lindel_training.txt", sep='\t', header=None)
     editData = data.copy().to_numpy()
 
@@ -48,6 +59,7 @@ def generateBootstrappingNoise(samples, repetitions):
             for label in sampledRow:
                 bootstrappedList[label] += 1
 
+            # normalization
             bootstrappedList = bootstrappedList / sum(bootstrappedList)
 
             row[3034:] = bootstrappedList
@@ -57,9 +69,3 @@ def generateBootstrappingNoise(samples, repetitions):
         filename = "./Lindel_training_bootstrapping_" + str(int(samples)) + "samples_" + str(rep) + ".txt"
         resultData.to_csv(filename, sep='\t', index=False, header=None)
         print("---- random generator finished for: " + str(samples) + " samples, repetition: " + str(rep) + " ----")
-
-
-if __name__ == "__main__":
-    percentages = [10,20]
-    for i in percentages:
-        generateBootstrappingNoise(i, 5)
