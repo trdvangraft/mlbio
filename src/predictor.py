@@ -121,7 +121,7 @@ def gen_prediction(hotencoding, ins, bfeatures, prereq, indel, deletion, inserti
 
     label, rev_index, features, frame_shift = prereq
 
-
+    #Reshape features so they can be put in the models
     input_indel = hotencoding.reshape((-1, 384))
     input_ins   = ins.reshape((-1, 104))
     input_del   = bfeatures.reshape((-1, 3033))
